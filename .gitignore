@@ -1,0 +1,4 @@
+prepare/front/node_modules
+prepare/back/node_modules
+prepare/front/.next
+.env
