@@ -1,13 +1,14 @@
-const express = require('express');
 require('dotenv').config();
-const app = express();
-const port = 3065;
-
+const express = require('express');
 const mongoose = require('mongoose');
-mongoose.connect(`mongodb+srv://admin:${process.env.DB_PASS}@recipecluster.zsgvx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`, {
-    useNewUrlParser: true, useUnifiedTopology: true
-}).then(() => console.log('MongoDB connected...'))
-.catch(error => console.log(error));
+const app = express();
+const { PORT, DB_PASS } = process.env;
 
-app.get('/', (req, res) => res.send('연결완료'));
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+mongoose
+    .connect(`mongodb+srv://admin:${DB_PASS}@recipecluster.zsgvx.mongodb.net/main?retryWrites=true&w=majority`, {useNewUrlParser: true, useUnifiedTopology: true})
+    .then(() => console.log('MongoDB connected...'))
+    .catch(error => console.log(error));
+
+app.listen(PORT, () => console.log(`Server listening on port ${PORT}!`));
+
+
