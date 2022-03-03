@@ -12,14 +12,15 @@ var options = {
   }
 };
 
-request(options, function (error, body) {
+request(options, function (error, response) {
   if (error) throw new Error(error);
   const reg = /[a-z0-9]|[ \[\]{}()<>?|`~!@#$%^&*-_+=,.;:\"'\\]/g;
 
   for(let i=0; i<357; i++){
-    const data = JSON.parse(body).COOKRCP01.row[i];
+    const data = JSON.parse(response.body).COOKRCP01.row[i];
     const title = data.RCP_NM;
     const image = data.ATT_FILE_NO_MK;
+    const type = data.RCP_PAT2;
     let nutriment = {};
     let ingredient = data.RCP_PARTS_DTLS.replace(/\n/gi,",").split(",");
     let ingredientKey = ingredient.join("").replace(reg,"");
@@ -47,6 +48,7 @@ request(options, function (error, body) {
         ingredient,
         recipe,
         ingredientKey,
+        type
     });
 
     newRecipe.save(function (err) {

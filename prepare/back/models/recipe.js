@@ -6,7 +6,8 @@ const mainSchema = new mongoose.Schema({
   nutriment: { type: Object },
   ingredient: { type: Array, required: true},
   recipe: { type: Array },
-  ingredientKey: { type: String, required: true}
-});
+  ingredientKey: { type: String, required: true},
+  type: { type: String }
+}, { versionKey: false});
 
 module.exports = mongoose.model("Main", mainSchema);
