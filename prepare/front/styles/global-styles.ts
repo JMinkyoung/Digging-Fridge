@@ -6,6 +6,10 @@ const GlobalStyle = createGlobalStyle`
   :root{
     --maingreen : #3e6958;
     --mainyellow: #fed88d;
+    --lightbackcolor: #F8F7F4;
+    --lightcolor: #ccc;
+    --darkbackcolor: #1E1E22;
+    --darkcolor: #31302E;
   }
   * {
     box-sizing: border-box;
