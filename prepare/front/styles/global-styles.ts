@@ -6,17 +6,17 @@ const GlobalStyle = createGlobalStyle`
   :root{
     --maingreen : #3e6958;
     --mainyellow: #fed88d;
-    --lightbackcolor: #F8F7F4;
+    --lightbackcolor: whitesmoke;
     --lightcolor: #ccc;
     --darkbackcolor: #1E1E22;
     --darkcolor: #31302E;
   }
   * {
     box-sizing: border-box;
-    /* user-select: none; */
+    -webkit-tap-highlight-color : rgba(0,0,0,0);
   }
   body{
-    font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-family: -apple-system,BlinkMacSystemFont,helvetica,AppleSDGothicNeo,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
     background-color:#F8F7F4;
   }
   a {

@@ -31,7 +31,7 @@ const ComponentContainer = styled.div`
 const ContentContainer = styled.div`
   margin-top: 20px;
   border-radius: 20px;
-  background-color: var(--lightcolor);
+  background-color: white;
   min-height: 430px;
 `;
 
@@ -48,6 +48,7 @@ const Home: NextPage = () => {
       <ComponentContainer><SearchInput /></ComponentContainer>
       <ComponentContainer>
         <ContentContainer>
+          <RecipeContent />
           <RecipeContent />
         </ContentContainer>
       </ComponentContainer>
