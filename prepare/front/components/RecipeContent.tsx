@@ -2,6 +2,7 @@ import React, {useState, useRef} from 'react';
 import styled from 'styled-components';
 import Recipe from '../interfaces/RecipeInterface';
 import { FiChevronDown } from 'react-icons/fi';
+import Modal from './Modal';
 
 interface Iprops {
   data: Recipe;
@@ -87,6 +88,7 @@ const RecipeContent = () => {
         })}</RecipeIngredient>
       </RecipeInfoWrapper>
       <RecipeMore open={open} onClick={onClickMore}/>
+      {open ? <Modal setOpen={setOpen}/> : null }
     </RecipeContentWrapper>
   );
 };
