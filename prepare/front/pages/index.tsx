@@ -6,12 +6,13 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../modules';
 import Footer from '../components/Footer';
 import RecipeContent from '../components/RecipeContent';
-
-const PageContainer = styled.div<{mode: string}>`
+import React, {useState} from 'react';
+const PageContainer = styled.div<{mode: string, fixed: boolean}>`
   width: 100%;
   height: 100%;
   position: fixed;
-  overflow: auto;
+  overflow: ${(props)=>props.fixed ? 'hidden' : 'scroll'};
+  bottom: 0;
 
   background-color:${props => props.mode === "light" ? `var(--lightbackcolor)` : `var(--darkbackcolor)`};
   color: ${props => props.mode === "light" ?  `var(--darkcolor)` : `var(--lightcolor)`};
@@ -41,15 +42,15 @@ const FotterContainer = styled.div`
 
 const Home: NextPage = () => {
   const mode: string = useSelector((state: RootState) => state.mode);
+  const [fixed, setFixed] = useState(false);
 
   return (
-    <PageContainer mode={mode}>
+    <PageContainer fixed={fixed} mode={mode}>
       <ComponentContainer><MainHeader /></ComponentContainer>
       <ComponentContainer><SearchInput /></ComponentContainer>
       <ComponentContainer>
         <ContentContainer>
-          <RecipeContent />
-          <RecipeContent />
+          <RecipeContent fixed={fixed} setFixed={setFixed} />
         </ContentContainer>
       </ComponentContainer>
       <FotterContainer>

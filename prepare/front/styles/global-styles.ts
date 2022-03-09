@@ -37,6 +37,8 @@ const GlobalStyle = createGlobalStyle`
     transform: translateZ(0);
     backface-visibility: hidden;
   }
+  .hidden {height:100%; min-height:100%; overflow:hidden !important; touch-action:none;}
+
   /* @media only screen and (max-width: 768px) {
     body {
       font-size: 15px;

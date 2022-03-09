@@ -5,12 +5,14 @@ import { FiChevronDown } from 'react-icons/fi';
 import Modal from './Modal';
 
 interface Iprops {
-  data: Recipe;
+  // data: Recipe;
+  setFixed: React.Dispatch<React.SetStateAction<boolean>>;
+  fixed: boolean;
 }
 
 const RecipeContentWrapper = styled.div<{open: boolean}>`
   display: flex;
-  height:${(props)=> props.open ? '180px':'90px'};
+  height:90px;
   padding: 5px 5px 0 5px;
   border-radius: 20px;
   justify-content: space-between;
@@ -60,7 +62,7 @@ const RecipeMore = styled(FiChevronDown)<{open: boolean}>`
 `;
 
 
-const RecipeContent = () => {
+const RecipeContent = (props: Iprops) => {
   const [open, setOpen] = useState(false);
   const data = {
                 "_id":{"$oid":"62205a48fe5e5f3f53dd6506"},
@@ -75,6 +77,7 @@ const RecipeContent = () => {
 
   const onClickMore = () => {
     setOpen(!open);
+    props.setFixed(!props.fixed);
   }
 
   return(
@@ -88,7 +91,7 @@ const RecipeContent = () => {
         })}</RecipeIngredient>
       </RecipeInfoWrapper>
       <RecipeMore open={open} onClick={onClickMore}/>
-      {open ? <Modal setOpen={setOpen}/> : null }
+      {open ? <Modal open={open} setFixed={props.setFixed} setOpen={setOpen}/> : null }
     </RecipeContentWrapper>
   );
 };
