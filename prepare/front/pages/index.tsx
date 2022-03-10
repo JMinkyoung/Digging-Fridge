@@ -30,6 +30,7 @@ const ComponentContainer = styled.div`
 `;
 
 const ContentContainer = styled.div`
+  padding: 5px;
   margin-top: 20px;
   border-radius: 20px;
   background-color: white;
@@ -51,6 +52,10 @@ const Home: NextPage = () => {
       <ComponentContainer>
         <ContentContainer>
           <RecipeContent fixed={fixed} setFixed={setFixed} />
+          <RecipeContent fixed={fixed} setFixed={setFixed} />
+
+          <RecipeContent fixed={fixed} setFixed={setFixed} />
+
         </ContentContainer>
       </ComponentContainer>
       <FotterContainer>

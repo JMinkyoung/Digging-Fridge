@@ -16,7 +16,8 @@ const RecipeContentWrapper = styled.div<{open: boolean}>`
   padding: 5px 5px 0 5px;
   border-radius: 20px;
   justify-content: space-between;
-  background-color: #fed88d;
+  /* background-color: #fed88d; */
+  background-color: white;
   transition:  height 0.5s ease;
   margin-bottom: 5px;
 
@@ -30,6 +31,7 @@ const RecipeInfoWrapper = styled.div`
   top: 0;
   width: 200px;
   margin-top: 5px;
+  margin-left: 5px;
 `;
 
 const RecipeTitle = styled.h1`
