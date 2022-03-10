@@ -17,6 +17,7 @@ const GlobalStyle = createGlobalStyle`
   }
   body{
     font-family: -apple-system,BlinkMacSystemFont,helvetica,AppleSDGothicNeo,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
+    /* font-family: 'Noto Sans KR', sans-serif; */
     background-color:#F8F7F4;
   }
   a {

@@ -4,7 +4,7 @@ import Recipe from '../interfaces/RecipeInterface';
 import { BsX } from 'react-icons/bs';
 
 interface Iprops {
-  // data: Recipe;
+  data: Recipe;
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setFixed: React.Dispatch<React.SetStateAction<boolean>>;
@@ -20,7 +20,7 @@ const slideUp = keyframes`
 
 const ModalWrapper = styled.div<{open:boolean}>`
   width: 100%;
-  height: ${(props)=>props.open? '350px': '0px'};
+  height: ${(props)=>props.open? '450px': '0px'};
   position:fixed;
   background-color: white;
   bottom: 0;
@@ -33,7 +33,7 @@ const ModalWrapper = styled.div<{open:boolean}>`
 `;
 
 const ModalContent = styled.div`
-display: flex;
+  display: flex;
   width: 100%;
   height: 100%;
   justify-content: center;
@@ -54,6 +54,7 @@ const BackWrapper = styled.div`
   right: 0;
   width: 100%;
   height: 100%;
+  
   background-color: rgb(0, 0, 0, 0.5);
   z-index: 1;
   overflow: hidden;
@@ -62,9 +63,31 @@ const BackWrapper = styled.div`
 const ModalTopInfo = styled.div`
   background-color: white;
   width:95%;
-  height: 140px;
+  height: 150px;
   position: fixed;
   padding-top: 10px;
+  border-radius: 6px 6px 0 0 ;
+  border-bottom: 2px solid black ;
+
+`;
+
+const ModalTitleWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 10px;
+  left: 110px;
+`;
+
+const ModalSubTitle = styled.span`
+  font-size: 16px;
+  color: rgb(97, 96, 96);
+  margin-bottom: 3px;
+`;
+
+const ModalTitle = styled.span`
+  font-size: 25px;
+  font-weight: bolder;
 `;
 
 const CloseButton = styled(BsX)`
@@ -76,18 +99,30 @@ const CloseButton = styled(BsX)`
   cursor: pointer;
 `;
 
+const ModalNutrimentWrapper = styled.ul`
+  margin-top: 10px;
+`;
+
+const ModalIngredientWrapper = styled.div`
+  position: absolute;
+  padding: 3px;
+  border-radius: 6px;
+  left: 110px;  
+  top: 55px;
+  width: 70%;
+  height: 60px;
+  line-height: 120%;
+  background-color: whitesmoke;
+  overflow-y: scroll;
+  overflow-x: hidden;
+`;
+
+const ModalRecipeWrapper = styled.div`
+  padding-top: 160px;
+  line-height: 150%;
+`;
 const Modal = (props: Iprops) => {
   const nutriName = {"eng": "열량", "car": "탄수화물", "pro": "단백질", "fat":"지방", "na":"나트륨" };
-  const data = {
-    "_id":{"$oid":"62205a48fe5e5f3f53dd6506"},
-    "title":"칼륨 듬뿍 고구마죽",
-    "image":"http://www.foodsafetykorea.go.kr/uploadimg/cook/10_00017_1.png",
-    "nutriment":{"eng":"205","car":"35","pro":"3","fat":"6","na":"68"},
-    "ingredient":["고구마죽","고구마 100g(2/3개)"," 설탕 2g(1/3작은술)"," 찹쌀가루 3g(2/3작은술)","물 200ml(1컵)"," 잣 8g(8알)"," 찹쌀가루 3g(2/3작은술)","물 200ml(1컵)"," 잣 8g(8알)"],
-    "recipe":["1. 고구마는 깨끗이 씻어서 껍질을 벗기고 4cm 정도로 잘라준다.a","2. 찜기에 고구마를 넣고 20~30분 정도 삶아 주고, 블렌더나 체를 이용하여 잘 으깨어 곱게 만든다.b","3. 고구마와 물을 섞어 끓이면서 찹쌀가루로 농도를 맞추고 설탕을 넣어 맛을 낸다.c","4. 잣을 팬에 노릇하게 볶아 다져서 고구마 죽에 섞는다. 기호에 따라 고구마를 튀겨 얹어 먹어도 좋다."],
-    "ingredientKey":"고구마죽고구마개설탕작은술찹쌀가루작은술물컵잣알",
-    "type":"후식"
-  };
 
   const closeModal = (e: any) => {
     props.setOpen(false);
@@ -99,23 +134,31 @@ const Modal = (props: Iprops) => {
     <ModalWrapper open={props.open}>
     <ModalContent>
       <ModalTopInfo>
-        <img style={{width: '100px', height: '100px', borderRadius:'30px'}} src={data.image}/>
-        <span>{data.title}</span>
-        <ul>
-          {Object.keys(data.nutriment).map((key: string, index: number) => 
-          <li style={{float:'left', marginLeft: '5px'}}key={index}> <span style={{fontWeight: 'bolder'}}>{nutriName[key]}</span> {data.nutriment[key]}</li>)}
-        </ul>
-        <br/>
-      <hr/>
-      <CloseButton onClick={closeModal}/>
-
+        <img style={{width: '100px', height: '100px', borderRadius:'30px'}} src={props.data.image}/>
+        <ModalTitleWrapper>
+          <ModalSubTitle>{props.data.type}</ModalSubTitle>
+          <ModalTitle>{props.data.title}</ModalTitle>
+        </ModalTitleWrapper>
+        <ModalIngredientWrapper>
+          <ul>
+            {props.data.ingredient.map((v: string, index: number)=>
+                <li style={{fontSize: '15px', float: 'left'}} key={index}>{v+","}&nbsp;</li>)}
+          </ul>
+        </ModalIngredientWrapper>
+        <ModalNutrimentWrapper>
+          {Object.keys(props.data.nutriment).map((key: string, index: number) => 
+          <li style={{float:'left', marginLeft: '8px'}}key={index}> <span style={{fontWeight: 'bolder'}}>{nutriName[key]}</span> {props.data.nutriment[key]}</li>)}
+        </ModalNutrimentWrapper>
+        <CloseButton onClick={closeModal}/>
       </ModalTopInfo>
-      <div style={{paddingTop: "150px"}}>
+
+
+      <ModalRecipeWrapper>
         <ul>
-          {data.recipe.map((v: string, index: number)=>
-              <li style={{fontSize: '19px'}} key={index}>{v.replace(/[a-z]$/, "")}</li>)}
+          {props.data.recipe.map((v: string, index: number)=>
+              <li style={{fontSize: '16px', marginBottom: '10px'}} key={index}><span style={{fontWeight:'bolder'}}>{index+1+"."}</span>{v.replace(/^[0-9]+./, "").replace(/[a-z]$/, "")}</li>)}
         </ul>
-      </div>
+      </ModalRecipeWrapper>
     </ModalContent>
     </ModalWrapper>
    </>
