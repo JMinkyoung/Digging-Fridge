@@ -6,6 +6,7 @@ import GlobalStyle from '../styles/global-styles';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import rootReducer from '../modules';
+import wrapper from '../store/configureStore';
 
 const store = createStore(rootReducer);
 
@@ -24,4 +25,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   )
 }
 
-export default MyApp
+export default wrapper.withRedux(MyApp);
