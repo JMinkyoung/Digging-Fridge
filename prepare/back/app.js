@@ -12,7 +12,5 @@ mongoose
 
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}!`));
 
-app.use('/test',mainRouter);
+app.use('/recipes',mainRouter);
 
-// db.articles.find( { “writer”: { $in: [ “Alpha”, “Bravo” ] } } ).pretty()
-//https://pro-self-studier.tistory.com/59
