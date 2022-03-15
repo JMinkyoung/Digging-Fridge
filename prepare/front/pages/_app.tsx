@@ -6,13 +6,13 @@ import GlobalStyle from '../styles/global-styles';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import rootReducer from '../modules';
-import wrapper from '../store/configureStore';
+import { wrapper } from '../modules/configureStore';
 
-const store = createStore(rootReducer);
+// const store = createStore(rootReducer);
 
 function MyApp({ Component, pageProps }: AppProps) {
   return(
-    <Provider store={store}>
+    // <Provider store={store}>
       <ThemeProvider theme={theme}>
         <GlobalStyle/>
         <Head>
@@ -21,7 +21,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         </Head>
         <Component {...pageProps} />
       </ThemeProvider>
-    </Provider>
+    // </Provider>
   )
 }
 
