@@ -1,4 +1,4 @@
-import { all, fork ,put, takeLatest, throttle, call} from "redux-saga/effects";
+import { all, fork ,put, takeLatest, throttle, call, take} from "redux-saga/effects";
 import { LOAD_RECIPES_FAILURE, LOAD_RECIPES_SUCCESS, LOAD_RECIPES_REQUEST } from "../modules/recipe";
 import axios from "axios";
 
@@ -22,7 +22,7 @@ function* loadRecipes() {
 }
 
 function* watchLoadRecipes() {
-  yield throttle(4000 ,LOAD_RECIPES_REQUEST,loadRecipes);
+  yield takeLatest(LOAD_RECIPES_REQUEST,loadRecipes);
 }
 
 export default function* recipeSaga() {
