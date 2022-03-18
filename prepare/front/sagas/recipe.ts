@@ -2,13 +2,13 @@ import { all, fork ,put, takeLatest, throttle, call, take} from "redux-saga/effe
 import { LOAD_RECIPES_FAILURE, LOAD_RECIPES_SUCCESS, LOAD_RECIPES_REQUEST } from "../modules/recipe";
 import axios from "axios";
 
-function loadRecipesAPI() {
-  return axios.get(`/recipes`);
+function loadRecipesAPI(lastId) {
+  return lastId ? axios.get(`/recipes?lastId=${lastId}`) : axios.get(`/recipes`);
 }
 
-function* loadRecipes() {
+function* loadRecipes(action) {
   try {
-      const result = yield call(loadRecipesAPI);
+      const result = yield call(loadRecipesAPI, action.data);
       yield put({
           type: LOAD_RECIPES_SUCCESS,
           data: result.data,

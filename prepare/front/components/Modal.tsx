@@ -146,8 +146,10 @@ const Modal = (props: Iprops) => {
           </ul>
         </ModalIngredientWrapper>
         <ModalNutrimentWrapper>
-          {Object.keys(props.data.nutriment).map((key: string, index: number) => 
-          <li style={{float:'left', marginLeft: '8px'}}key={index}> <span style={{fontWeight: 'bolder'}}>{nutriName[key]}</span> {props.data.nutriment[key]}</li>)}
+          {props.data.nutriment &&
+          Object.keys(props.data.nutriment).map((key: string, index: number) => 
+          <li style={{float:'left', marginLeft: '8px'}}key={index}> <span style={{fontWeight: 'bolder'}}>{nutriName[key]}</span> {props.data.nutriment && props.data.nutriment[key]}</li>)
+          }
         </ModalNutrimentWrapper>
         <CloseButton onClick={closeModal}/>
       </ModalTopInfo>

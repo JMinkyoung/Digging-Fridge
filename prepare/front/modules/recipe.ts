@@ -12,11 +12,6 @@ export const LOAD_RECIPES_REQUEST = 'recipe/LOAD_RECIPES_REQUEST' as const;
 export const LOAD_RECIPES_SUCCESS = 'recipe/LOAD_RECIPES_SUCCESS' as const;
 export const LOAD_RECIPES_FAILURE = 'recipe/LOAD_RECIPES_FAILURE' as const;
 
-export const loadRecipesRequestAction = () => {
-  return{
-    type:LOAD_RECIPES_REQUEST
-  };
-}
 
 const recipe = (state = initialState, action) => {
   switch (action.type) {
@@ -30,7 +25,7 @@ const recipe = (state = initialState, action) => {
     case LOAD_RECIPES_SUCCESS:
       return {
         ...state,
-        mainRecipes: [...action.data, ...state.mainRecipes],
+        mainRecipes: [...state.mainRecipes,...action.data ],
         loadRecipesLoading: false,
         loadRecipesDone : true,
         loadRecipesError : null,

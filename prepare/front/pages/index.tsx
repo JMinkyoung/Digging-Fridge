@@ -1,4 +1,4 @@
-import type { NextPage , GetServerSideProps} from 'next';
+import type { NextPage } from 'next';
 import styled from 'styled-components';
 import MainHeader from '../components/MainHeader';
 import SearchInput from '../components/SearchInput';
@@ -6,10 +6,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../modules';
 import Footer from '../components/Footer';
 import RecipeContent from '../components/RecipeContent';
-import React, {useState} from 'react';
+import { FiChevronDown } from 'react-icons/fi';
+import React, {useEffect, useState} from 'react';
 import Recipe from '../interfaces/RecipeInterface';
-import { loadRecipesRequestAction } from '../modules/recipe';
-import { SagaStore, wrapper } from '../modules/configureStore';
+import { LOAD_RECIPES_REQUEST } from '../modules/recipe';
+import { wrapper } from '../modules/configureStore';
 import { END } from 'redux-saga';
 
 const PageContainer = styled.div<{mode: string, fixed: boolean}>`
@@ -47,9 +48,20 @@ const FotterContainer = styled.div`
 `;
 
 const Home: NextPage = () => {
+  const dispatch = useDispatch();
   const mode: string = useSelector((state: RootState) => state.mode);
   const recipes: Recipe[] = useSelector((state: RootState) => state.recipe.mainRecipes);
   const [fixed, setFixed] = useState(false);
+  const [opend, setOpend] = useState(false);
+
+  useEffect(()=>{
+    setOpend(false);
+  },[])
+
+  const onClickMore = () => {
+    setOpend(true);
+    dispatch({type: LOAD_RECIPES_REQUEST, data: recipes[recipes.length-1]._id});
+  }
 
 
   return (
@@ -61,9 +73,9 @@ const Home: NextPage = () => {
           {recipes.map((v,idx)=>{
             return <RecipeContent key={idx} data={v} fixed={fixed} setFixed={setFixed} />
           })}
-
         </ContentContainer>
       </ComponentContainer>
+      <button onClick={onClickMore}>더보기<FiChevronDown/></button>
       <FotterContainer>
         <p>문의 및 레시피 추가</p>
         <Footer/>
@@ -72,8 +84,8 @@ const Home: NextPage = () => {
   )
 }
 
-export const getServerSideProps = wrapper.getServerSideProps(store => async _context => {
-  store.dispatch(loadRecipesRequestAction());
+export const getServerSideProps = wrapper.getServerSideProps(store => async() => {
+  store.dispatch({type: LOAD_RECIPES_REQUEST});
   store.dispatch(END);
   await store.sagaTask.toPromise();
 });

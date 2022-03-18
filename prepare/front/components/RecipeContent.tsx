@@ -16,7 +16,6 @@ const RecipeContentWrapper = styled.div<{open: boolean}>`
   padding: 5px 5px 0 5px;
   border-radius: 20px;
   justify-content: space-between;
-  /* background-color: #fed88d; */
   background-color: white;
   transition:  height 0.5s ease;
   margin-bottom: 5px;
@@ -34,9 +33,9 @@ const RecipeInfoWrapper = styled.div`
   margin-left: 5px;
 `;
 
-const RecipeTitle = styled.h1`
+const RecipeTitle = styled.h1<{len: number}>`
   font-weight: bolder;
-  font-size: 20px;
+  font-size: ${props => props.len>10 ?  '15px' : '17px'};;
 `;
 
 const RecipeIngredient = styled.div`
@@ -76,7 +75,7 @@ const RecipeContent = (props: Iprops) => {
     <RecipeContentWrapper open={open}>
       <RecipeImgWrapper><img style={{width: '100%', height: '100%', borderRadius:'30px'}} src={props.data.image}/></RecipeImgWrapper>
       <RecipeInfoWrapper>
-        <RecipeTitle>{props.data.title}</RecipeTitle>
+        <RecipeTitle len={props.data.title.length}>{props.data.title}</RecipeTitle>
         <RecipeIngredient>{props.data.ingredient.map((v,idx)=>{
           if(idx===props.data.ingredient.length-1) return v;
           else return v+", "
