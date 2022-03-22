@@ -1,6 +1,6 @@
 import React, {useState, useRef} from 'react';
 import styled from 'styled-components';
-import Recipe from '../interfaces/RecipeInterface';
+import { Recipe } from '../interface';
 import { FiChevronDown } from 'react-icons/fi';
 import Modal from './Modal';
 
@@ -72,7 +72,7 @@ const RecipeContent = (props: Iprops) => {
   }
 
   return(
-    <RecipeContentWrapper open={open}>
+    <RecipeContentWrapper open={open} onClick={onClickMore}>
       <RecipeImgWrapper><img style={{width: '100%', height: '100%', borderRadius:'30px'}} src={props.data.image}/></RecipeImgWrapper>
       <RecipeInfoWrapper>
         <RecipeTitle len={props.data.title.length}>{props.data.title}</RecipeTitle>
@@ -81,7 +81,7 @@ const RecipeContent = (props: Iprops) => {
           else return v+", "
         })}</RecipeIngredient>
       </RecipeInfoWrapper>
-      <RecipeMore open={open} onClick={onClickMore}/>
+      <RecipeMore open={open}/>
       {open ? <Modal data={props.data} open={open} setFixed={props.setFixed} setOpen={setOpen}/> : null }
     </RecipeContentWrapper>
   );

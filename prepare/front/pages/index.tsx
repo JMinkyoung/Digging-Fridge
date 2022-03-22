@@ -8,7 +8,7 @@ import Footer from '../components/Footer';
 import RecipeContent from '../components/RecipeContent';
 import { FiChevronDown } from 'react-icons/fi';
 import React, {useEffect, useState, useRef} from 'react';
-import Recipe from '../interfaces/RecipeInterface';
+import { Recipe } from '../interface';
 import { LOAD_RECIPES_REQUEST } from '../modules/recipe';
 import { wrapper } from '../modules/configureStore';
 import { END } from 'redux-saga';
@@ -49,6 +49,7 @@ const MoreButtonWrapper = styled.div<{opend: boolean}>`
   justify-content: center;
   font-size: 18px;
   margin-top: 10px;
+  cursor: pointer;
 `;
 
 const MoreButton = styled.div`
@@ -73,27 +74,39 @@ const Home: NextPage = () => {
   const loadRecipesLoading: boolean = useSelector((state: RootState) => state.recipe.loadRecipesLoading);
   const [fixed, setFixed] = useState(false);
   const [opend, setOpend] = useState(false);
+  const [scrollTop, setScrollTop] = useState(0);
 
   useEffect(()=>{
     setOpend(false);
   },[]);
 
-  useEffect(()=>{  
-    console.log(contentRef.current.clientHeight);
-    console.log(pageRef.current.scrollTop);
+  const updateScrollTop = () => {
+    setScrollTop(pageRef.current.scrollTop); 
+  }
 
-    function onScroll() {
-        if(contentRef.current.clientHeight / 2 < pageRef.current.scrollTop) {
+  useEffect(() => { // 렌더링 될때마다 scrollTop 업데이트
+    const watch = () => {
+      pageRef.current.addEventListener('scroll', updateScrollTop);
+    }
+    watch(); 
+    return () => {
+      pageRef.current.removeEventListener('scroll', updateScrollTop); 
+    }
+  });
+
+  useEffect(()=>{  
+    const onScroll = () => {
+        if(pageRef.current.clientHeight/3 < scrollTop) {
             if(!loadRecipesLoading){
               dispatch({type: LOAD_RECIPES_REQUEST, data: recipes[recipes.length-1]._id});
             }
         }
     }
-    window.addEventListener('scroll',onScroll);
+    pageRef.current.addEventListener('scroll',onScroll);
     return () => {
-        window.removeEventListener('scroll', onScroll);
+      pageRef.current.removeEventListener('scroll', onScroll);
     }
-},[loadRecipesLoading, recipes]);
+  },[loadRecipesLoading, recipes, scrollTop]);
 
   const onClickMore = () => {
     setOpend(true);
@@ -124,12 +137,6 @@ const Home: NextPage = () => {
     </PageContainer>
   )
 }
-
-// export const getServerSideProps = wrapper.getServerSideProps(store => async() => {
-//   store.dispatch({type: LOAD_RECIPES_REQUEST});
-//   store.dispatch(END);
-//   await store.sagaTask.toPromise();
-// });
 
 export const getStaticProps = wrapper.getStaticProps(store => async() => {
   store.dispatch({type: LOAD_RECIPES_REQUEST});

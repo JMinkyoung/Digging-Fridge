@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
-import Recipe from '../interfaces/RecipeInterface';
+import { Recipe } from '../interface';
 import { BsX } from 'react-icons/bs';
 
 interface Iprops {
@@ -63,7 +63,7 @@ const BackWrapper = styled.div`
 const ModalTopInfo = styled.div`
   background-color: white;
   width:95%;
-  height: 150px;
+  height: 180px;
   position: fixed;
   padding-top: 10px;
   border-radius: 6px 6px 0 0 ;
@@ -93,14 +93,15 @@ const ModalTitle = styled.span`
 const CloseButton = styled(BsX)`
   position: absolute;
   right: 0px;
-  top: 10px;
+  top: 0px;
   color: black;
   font-size: 40px;
   cursor: pointer;
 `;
 
 const ModalNutrimentWrapper = styled.ul`
-  margin-top: 10px;
+  margin-top: 40px;
+  font-size: 14px;
 `;
 
 const ModalIngredientWrapper = styled.div`
@@ -108,7 +109,7 @@ const ModalIngredientWrapper = styled.div`
   padding: 3px;
   border-radius: 6px;
   left: 110px;  
-  top: 55px;
+  top: 80px;
   width: 70%;
   height: 60px;
   line-height: 120%;
@@ -118,7 +119,7 @@ const ModalIngredientWrapper = styled.div`
 `;
 
 const ModalRecipeWrapper = styled.div`
-  padding-top: 160px;
+  padding-top: 190px;
   line-height: 150%;
 `;
 const Modal = (props: Iprops) => {
@@ -142,6 +143,7 @@ const Modal = (props: Iprops) => {
         <ModalIngredientWrapper>
           <ul>
             {props.data.ingredient.map((v: string, index: number)=>
+                index === props.data.ingredient.length-1 ? <li style={{fontSize: '15px', float: 'left'}} key={index}>{v}&nbsp;</li> :
                 <li style={{fontSize: '15px', float: 'left'}} key={index}>{v+","}&nbsp;</li>)}
           </ul>
         </ModalIngredientWrapper>
@@ -153,8 +155,6 @@ const Modal = (props: Iprops) => {
         </ModalNutrimentWrapper>
         <CloseButton onClick={closeModal}/>
       </ModalTopInfo>
-
-
       <ModalRecipeWrapper>
         <ul>
           {props.data.recipe.map((v: string, index: number)=>
