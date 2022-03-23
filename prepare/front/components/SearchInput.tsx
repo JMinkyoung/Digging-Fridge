@@ -1,9 +1,11 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useCallback, useEffect} from 'react';
 import styled from 'styled-components';
 import {AiFillCloseCircle,} from 'react-icons/ai';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../modules';
 import SearchButton from './SearchButton';
+import { LOAD_TAG_RECIPES_REQUEST } from '../modules/recipe';
+
 
 const InputContainer = styled.div`
   padding: 3px 0 5px 0;
@@ -44,15 +46,17 @@ const ExtraCount = styled.div<{count: number}>`
 `;
 
 const SearchInput = () => {
+  const dispatch = useDispatch();
   const [tags, setTags] = useState<string[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const mode: string = useSelector((state: RootState) => state.mode);
 
-  const onClickInput = () => {
+  const onClickInput = useCallback(()=>{
     if(inputRef.current){
       inputRef.current.focus();
     }
-  };
+  },[inputRef.current]);
+
 
   const inputKeyDown = (e: any) => {
     const val = e.target.value;
@@ -66,11 +70,17 @@ const SearchInput = () => {
       removeTag(tags.length-1);
     }
   };
+
   const removeTag = (idx: number) => {
     const newTags: string[] = [...tags];
     newTags.splice(idx, 1);
     setTags(newTags);
   };
+
+  useEffect(()=>{ // 태그가 추가되거나 삭제 될때마다 API 요청
+    console.log(tags);
+    dispatch({type: LOAD_TAG_RECIPES_REQUEST, data: tags});
+  },[tags]);
 
   return (
     <InputContainer onClick={onClickInput}>

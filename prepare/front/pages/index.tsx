@@ -71,6 +71,8 @@ const Home: NextPage = () => {
 
   const mode: string = useSelector((state: RootState) => state.mode);
   const recipes: Recipe[] = useSelector((state: RootState) => state.recipe.mainRecipes);
+  const tagrecipes: Recipe[] = useSelector((state: RootState) => state.recipe.tagRecipes);
+
   const loadRecipesLoading: boolean = useSelector((state: RootState) => state.recipe.loadRecipesLoading);
   const [fixed, setFixed] = useState(false);
   const [opend, setOpend] = useState(false);
@@ -120,9 +122,10 @@ const Home: NextPage = () => {
       <ComponentContainer><SearchInput /></ComponentContainer>
       <ComponentContainer>
         <ContentContainer ref={contentRef}>
-          {recipes.map((v,idx)=>{
+          {tagrecipes.length ===  0 ? recipes.map((v,idx)=>{
             return <RecipeContent key={idx} data={v} fixed={fixed} setFixed={setFixed} />
-          })}
+          }) : tagrecipes.map((v,idx)=>{
+            return <RecipeContent key={idx} data={v} fixed={fixed} setFixed={setFixed} />})}
         </ContentContainer>
       </ComponentContainer>
       <MoreButtonWrapper opend={opend} onClick={onClickMore}>

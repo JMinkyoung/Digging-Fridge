@@ -1,8 +1,14 @@
 export interface IrecipeInitialState {
   mainRecipes: any[],
+  tagRecipes: any[],
+
   loadRecipesLoading: boolean,
   loadRecipesDone: boolean,
-  loadRecipesError: string | null
+  loadRecipesError: string | null,
+
+  loadTagRecipesLoading: boolean,
+  loadTagRecipesDone: boolean,
+  loadTagRecipesError: string | null,
 }
 
 export interface Recipe {
