@@ -11,8 +11,8 @@ function loadTagRecipesAPI(tags: string[]) {
   let query = "";
   tags.forEach((t)=>{
     query += `/${encodeURIComponent(t)}`;
-  })
-  return axios.get(`/tags${query}`);
+  });
+  return axios.get(`/recipes/tags${query}`);
 }
 
 function* loadRecipes(action) {

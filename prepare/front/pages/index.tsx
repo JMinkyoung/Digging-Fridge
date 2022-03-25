@@ -72,8 +72,14 @@ const Home: NextPage = () => {
   const mode: string = useSelector((state: RootState) => state.mode);
   const recipes: Recipe[] = useSelector((state: RootState) => state.recipe.mainRecipes);
   const tagrecipes: Recipe[] = useSelector((state: RootState) => state.recipe.tagRecipes);
+  const tags: string[] = useSelector((state: RootState) => state.tag.tags);
 
   const loadRecipesLoading: boolean = useSelector((state: RootState) => state.recipe.loadRecipesLoading);
+  const loadTagRecipesLoading: boolean = useSelector((state: RootState) => state.recipe.loadTagRecipesLoading);
+
+  const loadTagRecipesDone: boolean = useSelector((state: RootState) => state.recipe.loadTagRecipesDone);
+
+
   const [fixed, setFixed] = useState(false);
   const [opend, setOpend] = useState(false);
   const [scrollTop, setScrollTop] = useState(0);
@@ -96,6 +102,7 @@ const Home: NextPage = () => {
     }
   });
 
+  // 태그 레시피의 경우에도 무한 스크롤 가능하도록 수정해야함
   useEffect(()=>{  
     const onScroll = () => {
         if(pageRef.current.clientHeight/3 < scrollTop) {
@@ -122,10 +129,17 @@ const Home: NextPage = () => {
       <ComponentContainer><SearchInput /></ComponentContainer>
       <ComponentContainer>
         <ContentContainer ref={contentRef}>
-          {tagrecipes.length ===  0 ? recipes.map((v,idx)=>{
-            return <RecipeContent key={idx} data={v} fixed={fixed} setFixed={setFixed} />
-          }) : tagrecipes.map((v,idx)=>{
-            return <RecipeContent key={idx} data={v} fixed={fixed} setFixed={setFixed} />})}
+          
+          {/* 1. 완전 처음인 경우 */}
+          {tags.length===0 && !loadTagRecipesDone && 
+            recipes.map((v,idx)=>{
+              return <RecipeContent key={idx} data={v} fixed={fixed} setFixed={setFixed} />})
+          }
+          {/* 2. 검색했는데 결과가 있는 경우 */}
+          {tags.length !==0 && tagrecipes.length ? 
+             tagrecipes.map((v,idx)=>{
+              return <RecipeContent key={idx} data={v} fixed={fixed} setFixed={setFixed} />}) : loadTagRecipesDone && <h1>레시피가 없습니다</h1>}
+
         </ContentContainer>
       </ComponentContainer>
       <MoreButtonWrapper opend={opend} onClick={onClickMore}>

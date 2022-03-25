@@ -22,7 +22,7 @@ router.get("/tags/*", async (req, res) => {   //  GET /recipes/tags/tag1/tag2/ta
     tags.forEach((t)=>{
       query.$and.push({"ingredientKey": { $regex: decodeURIComponent(t)}});
     });
-    const recipes = await Main.find(query);
+    const recipes = await Main.find(query).limit(10);
     res.status(200).json(recipes);
   }catch(err){
     res.status(500).json({message: err.message});
