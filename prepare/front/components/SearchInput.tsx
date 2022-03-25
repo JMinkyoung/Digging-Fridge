@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../modules';
 import SearchButton from './SearchButton';
 import { LOAD_TAG_RECIPES_REQUEST } from '../modules/recipe';
+import { ADD_TAG, DELETE_TAG } from '../modules/tag';
 
 
 const InputContainer = styled.div`
@@ -47,9 +48,10 @@ const ExtraCount = styled.div<{count: number}>`
 
 const SearchInput = () => {
   const dispatch = useDispatch();
-  const [tags, setTags] = useState<string[]>([]);
+  // const [tags, setTags] = useState<string[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const mode: string = useSelector((state: RootState) => state.mode);
+  const tags: string[] = useSelector((state: RootState) => state.tag.tags);
 
   const onClickInput = useCallback(()=>{
     if(inputRef.current){
@@ -64,7 +66,7 @@ const SearchInput = () => {
       if(tags.find(tag => tag.toLowerCase() === val.toLowerCase())){
         return;
       }
-      setTags([...tags, val]);
+      dispatch({type: ADD_TAG, data: val});
       e.target.value = null;
     }else if(e.key === 'Backspace' && !val){
       removeTag(tags.length-1);
@@ -74,12 +76,12 @@ const SearchInput = () => {
   const removeTag = (idx: number) => {
     const newTags: string[] = [...tags];
     newTags.splice(idx, 1);
-    setTags(newTags);
+    dispatch({type: DELETE_TAG, data: newTags});
   };
 
   useEffect(()=>{ // 태그가 추가되거나 삭제 될때마다 API 요청
-    console.log(tags);
-    dispatch({type: LOAD_TAG_RECIPES_REQUEST, data: tags});
+    if(tags.length!==0) dispatch({type: LOAD_TAG_RECIPES_REQUEST, data: tags});
+    // 몇개씩 불러올지 결정 (너무 많은 경우가 있음) -> 이경우엔 마지막 아이디?
   },[tags]);
 
   return (

@@ -3,6 +3,8 @@ import { HYDRATE } from "next-redux-wrapper";
 import { IrecipeReducerState } from "./recipe";
 import mode from "./mode";
 import recipe from "./recipe";
+import tag from "./tag";
+import { ItagReducerState } from "./tag";
 
 // const persisConfig = {
 //   key: "root",
@@ -11,6 +13,7 @@ import recipe from "./recipe";
 
 export type State = {
   recipe: IrecipeReducerState;
+  tag: ItagReducerState;
   mode: string;
 };
 
@@ -21,6 +24,7 @@ const rootReducer = (state: State | undefined, action: AnyAction): State => {
       default: {
         const combinedReducer =combineReducers({
               recipe,
+              tag,
               mode
         });
         return combinedReducer(state,action);

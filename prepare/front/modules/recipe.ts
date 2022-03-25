@@ -47,7 +47,6 @@ const recipe = (state = initialState, action) => {
         loadRecipesError : action.error,
       }
       case LOAD_TAG_RECIPES_REQUEST:
-        console.log("here")
         return {
           ...state,
           loadTagRecipesLoading: true,
@@ -57,7 +56,7 @@ const recipe = (state = initialState, action) => {
       case LOAD_TAG_RECIPES_SUCCESS:
         return {
           ...state, 
-          tagRecipes: [...state.tagRecipes,...action.data],
+          tagRecipes: [...action.data],
           loadTagRecipesLoading: false,
           loadTagRecipesDone : true,
           loadTagRecipesError : null,

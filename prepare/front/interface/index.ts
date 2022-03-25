@@ -11,6 +11,11 @@ export interface IrecipeInitialState {
   loadTagRecipesError: string | null,
 }
 
+export interface ItagInitialState {
+  tags: string[],
+
+}
+
 export interface Recipe {
   _id: string,
   title: string,
