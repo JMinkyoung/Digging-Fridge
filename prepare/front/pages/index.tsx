@@ -9,7 +9,7 @@ import RecipeContent from '../components/RecipeContent';
 import { FiChevronDown } from 'react-icons/fi';
 import React, {useEffect, useState, useRef} from 'react';
 import { Recipe } from '../interface';
-import { LOAD_RECIPES_REQUEST } from '../modules/recipe';
+import { LOAD_RECIPES_REQUEST, LOAD_MORE_TAG_RECIPES_REQUEST } from '../modules/recipe';
 import { wrapper } from '../modules/configureStore';
 import { END } from 'redux-saga';
 
@@ -102,12 +102,13 @@ const Home: NextPage = () => {
     }
   });
 
-  // 태그 레시피의 경우에도 무한 스크롤 가능하도록 수정해야함
   useEffect(()=>{  
     const onScroll = () => {
-        if(pageRef.current.clientHeight/3 < scrollTop) {
-            if(!loadRecipesLoading){
+        if(contentRef.current.clientHeight/3 < scrollTop) {
+            if(!loadRecipesLoading && tagrecipes.length===0 ){  // 일반 레시피 더 불러오기
               dispatch({type: LOAD_RECIPES_REQUEST, data: recipes[recipes.length-1]._id});
+            }else if(!loadTagRecipesLoading && tagrecipes.length!==0){  // 태그 레시피 더 불러오기
+              dispatch({type: LOAD_MORE_TAG_RECIPES_REQUEST, data: {tags, lastId: tagrecipes[tagrecipes.length-1]._id}});
             }
         }
     }

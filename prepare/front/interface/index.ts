@@ -9,6 +9,10 @@ export interface IrecipeInitialState {
   loadTagRecipesLoading: boolean,
   loadTagRecipesDone: boolean,
   loadTagRecipesError: string | null,
+
+  loadMoreTagRecipesLoading: boolean,
+  loadMoreTagRecipesDone: boolean,
+  loadMoreTagRecipesError: string | null,
 }
 
 export interface ItagInitialState {

@@ -12,16 +12,24 @@ export const initialState: IrecipeInitialState = {
   loadTagRecipesDone: false,
   loadTagRecipesError: null,
 
+  loadMoreTagRecipesLoading: false,
+  loadMoreTagRecipesDone: false,
+  loadMoreTagRecipesError: null,
+
 }
 export type IrecipeReducerState = typeof initialState;
 
-export const LOAD_RECIPES_REQUEST = 'recipe/LOAD_RECIPES_REQUEST' as const;
-export const LOAD_RECIPES_SUCCESS = 'recipe/LOAD_RECIPES_SUCCESS' as const;
-export const LOAD_RECIPES_FAILURE = 'recipe/LOAD_RECIPES_FAILURE' as const;
+export const LOAD_RECIPES_REQUEST = 'recipe/LOAD_RECIPES_REQUEST';
+export const LOAD_RECIPES_SUCCESS = 'recipe/LOAD_RECIPES_SUCCESS';
+export const LOAD_RECIPES_FAILURE = 'recipe/LOAD_RECIPES_FAILURE';
 
-export const LOAD_TAG_RECIPES_REQUEST = 'recipe/LOAD_TAG_RECIPES_REQUEST' as const;
-export const LOAD_TAG_RECIPES_SUCCESS = 'recipe/LOAD_TAG_RECIPES_SUCCESS' as const;
-export const LOAD_TAG_RECIPES_FAILURE = 'recipe/LOAD_TAG_RECIPES_FAILURE' as const;
+export const LOAD_TAG_RECIPES_REQUEST = 'recipe/LOAD_TAG_RECIPES_REQUEST';
+export const LOAD_TAG_RECIPES_SUCCESS = 'recipe/LOAD_TAG_RECIPES_SUCCESS';
+export const LOAD_TAG_RECIPES_FAILURE = 'recipe/LOAD_TAG_RECIPES_FAILURE';
+
+export const LOAD_MORE_TAG_RECIPES_REQUEST = 'recipe/LOAD_MORE_TAG_RECIPES_REQUEST';
+export const LOAD_MORE_TAG_RECIPES_SUCCESS = 'recipe/LOAD_MORE_TAG_RECIPES_SUCCESS';
+export const LOAD_MORE_TAG_RECIPES_FAILURE = 'recipe/LOAD_MORE_TAG_RECIPES_FAILURE';
 
 const recipe = (state = initialState, action) => {
   switch (action.type) {
@@ -66,6 +74,27 @@ const recipe = (state = initialState, action) => {
           ...state,
           loadTagRecipesLoading: false,
           loadTagRecipesError : action.error,
+        }
+      case LOAD_MORE_TAG_RECIPES_REQUEST:
+        return {
+          ...state,
+          loadMoreTagRecipesLoading: true,
+          loadMoreTagRecipesDone: false,
+          loadMoreTagRecipesError: null,
+      };
+      case LOAD_MORE_TAG_RECIPES_SUCCESS:
+        return {
+          ...state, 
+          tagRecipes: [...state.tagRecipes,...action.data],
+          loadMoreTagRecipesLoading: false,
+          loadMoreTagRecipesDone : true,
+          loadMoreTagRecipesError : null,
+        }
+      case LOAD_MORE_TAG_RECIPES_FAILURE:
+        return{
+          ...state,
+          loadMoreTagRecipesLoading: false,
+          loadMoreTagRecipesError : action.error,
         }
     default:
       return state;

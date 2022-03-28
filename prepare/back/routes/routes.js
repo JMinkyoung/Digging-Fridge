@@ -17,8 +17,13 @@ router.get("/", async (req, res) => {   //  GET /recipes?lastId= || /recipes
 
 router.get("/tags/*", async (req, res) => {   //  GET /recipes/tags/tag1/tag2/tag3...
   try{
+    let lastId = req.query.lastId;
     const tags = req.params[0].split("/");
-    const query = { $and: [] };
+    let query = {};
+    // const query = { $and: [] };
+    if(lastId) query =  { $and: [] ,'_id' : { "$gt" : lastId}};
+    else query = { $and: [] };
+    
     tags.forEach((t)=>{
       query.$and.push({"ingredientKey": { $regex: decodeURIComponent(t)}});
     });
