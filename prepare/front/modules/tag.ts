@@ -6,8 +6,8 @@ export const initialState: ItagInitialState = {
 
 export type ItagReducerState = typeof initialState;
 
-export const ADD_TAG  = 'tag/ADD_TAG' as const;
-export const DELETE_TAG = 'tag/DELETE_TAG' as const;
+export const ADD_TAG  = 'tag/ADD_TAG';
+export const DELETE_TAG = 'tag/DELETE_TAG';
 
 const tag = (state = initialState, action) => {
   switch(action.type){
