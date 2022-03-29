@@ -46,6 +46,15 @@ const ExtraCount = styled.div<{count: number}>`
   font-weight: bolder;
 `;
 
+const SearchInputContent = styled.input<{mode: string}>`
+  color: ${props => props.mode === "light" ? 'black' : 'whitesmoke'};
+  font-size: 16px;
+  width: 80px;
+  height:30px;
+  line-height: 30px;
+  margin:2px 0 0 5px;
+`
+
 const SearchInput = () => {
   const dispatch = useDispatch();
   // const [tags, setTags] = useState<string[]>([]);
@@ -89,7 +98,7 @@ const SearchInput = () => {
       <InputWrapper>
         {tags.map((tag, idx)=>(idx < 3 ? <InputTag mode={mode} key={tag}>{tag}<AiFillCloseCircle style={{marginLeft: "3px", fontSize: '15px', cursor:'pointer'}} onClick={()=>{removeTag(idx)}}/></InputTag>:null        ))}
         <ExtraCount count={tags.length}>+{tags.length-3}</ExtraCount>
-        <input ref={inputRef} style={{fontSize: '16px', width: '80px', height:'30px', lineHeight: '30px', margin:'2px 0 0 5px'}}type="text" placeholder='재료 입력' onKeyDown={inputKeyDown} />
+        <SearchInputContent mode={mode} ref={inputRef} type="text" placeholder='재료 입력' onKeyDown={inputKeyDown} />
         <SearchButton />
       </InputWrapper>
     </InputContainer>

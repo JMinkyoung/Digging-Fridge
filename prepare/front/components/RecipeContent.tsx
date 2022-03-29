@@ -1,8 +1,10 @@
-import React, {useState, useRef} from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import { Recipe } from '../interface';
 import { FiChevronDown } from 'react-icons/fi';
 import Modal from './Modal';
+import { useSelector } from 'react-redux';
+import { RootState } from '../modules';
 
 interface Iprops {
   data: Recipe;
@@ -10,13 +12,15 @@ interface Iprops {
   fixed: boolean;
 }
 
-const RecipeContentWrapper = styled.div<{open: boolean}>`
+const RecipeContentWrapper = styled.div<{open: boolean, mode: string}>`
   display: flex;
   height:90px;
   padding: 5px 5px 0 5px;
   border-radius: 20px;
   justify-content: space-between;
   background-color: white;
+  background-color:${props => props.mode === "light" ? `white` : `#2a2a30`};
+  color: ${props => props.mode === "light" ?  `var(--darkcolor)` : `var(--lightcolor)`};
   transition:  height 0.5s ease;
   margin-bottom: 5px;
 
@@ -33,9 +37,10 @@ const RecipeInfoWrapper = styled.div`
   margin-left: 5px;
 `;
 
-const RecipeTitle = styled.h1<{len: number}>`
+const RecipeTitle = styled.h1<{len: number, mode: string}>`
   font-weight: bolder;
-  font-size: ${props => props.len>10 ?  '15px' : '17px'};;
+  font-size: ${props => props.len>10 ?  '15px' : '17px'};
+  color: ${props => props.mode === "light" ?  `var(--darkcolor)` : `whitesmoke`};
 `;
 
 const RecipeIngredient = styled.div`
@@ -58,24 +63,24 @@ const RecipeMore = styled(FiChevronDown)<{open: boolean}>`
   font-size: 40px;
   margin-top: 20px;
   transform: ${props => props.open ?  'rotate(180deg)' : null};
-  transition: transform 0.1s ease 0.1s;
+  transition: transform 0.2s ease 0.1s;
   cursor: pointer;
 `;
 
 
 const RecipeContent = (props: Iprops) => {
   const [open, setOpen] = useState(false);
-
+  const mode: string = useSelector((state: RootState) => state.mode);
   const onClickMore = () => {
     setOpen(!open);
     props.setFixed(!props.fixed);
   }
 
   return(
-    <RecipeContentWrapper open={open} onClick={onClickMore}>
+    <RecipeContentWrapper mode={mode} open={open} onClick={onClickMore}>
       <RecipeImgWrapper><img style={{width: '100%', height: '100%', borderRadius:'30px'}} src={props.data.image}/></RecipeImgWrapper>
       <RecipeInfoWrapper>
-        <RecipeTitle len={props.data.title.length}>{props.data.title}</RecipeTitle>
+        <RecipeTitle mode={mode} len={props.data.title.length}>{props.data.title}</RecipeTitle>
         <RecipeIngredient>{props.data.ingredient.map((v,idx)=>{
           if(idx===props.data.ingredient.length-1) return v;
           else return v+", "

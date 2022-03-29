@@ -2,6 +2,8 @@ import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { Recipe } from '../interface';
 import { BsX } from 'react-icons/bs';
+import { useSelector } from 'react-redux';
+import { RootState } from '../modules';
 
 interface Iprops {
   data: Recipe;
@@ -18,11 +20,11 @@ const slideUp = keyframes`
   }
 `;
 
-const ModalWrapper = styled.div<{open:boolean}>`
+const ModalWrapper = styled.div<{open:boolean, mode: string}>`
   width: 100%;
   height: ${(props)=>props.open? '450px': '0px'};
   position:fixed;
-  background-color: white;
+  background-color:${props => props.mode === "light" ? `white` : `var(--darkbackcolor)`};
   bottom: 0;
   left: 0;
   z-index: 2;
@@ -60,8 +62,8 @@ const BackWrapper = styled.div`
   overflow: hidden;
 `;
 
-const ModalTopInfo = styled.div`
-  background-color: white;
+const ModalTopInfo = styled.div<{mode: string}>`
+  background-color:${props => props.mode === "light" ? `white` : `var(--darkbackcolor)`};
   width:95%;
   height: 180px;
   position: fixed;
@@ -90,11 +92,11 @@ const ModalTitle = styled.span`
   font-weight: bolder;
 `;
 
-const CloseButton = styled(BsX)`
+const CloseButton = styled(BsX)<{mode: string}>`
   position: absolute;
   right: 0px;
   top: 0px;
-  color: black;
+  color: ${props => props.mode === "light" ? `black` : `var(--lightcolor)`};
   font-size: 40px;
   cursor: pointer;
 `;
@@ -104,7 +106,7 @@ const ModalNutrimentWrapper = styled.ul`
   font-size: 14px;
 `;
 
-const ModalIngredientWrapper = styled.div`
+const ModalIngredientWrapper = styled.div<{mode: string}>`
   position: absolute;
   padding: 3px;
   border-radius: 6px;
@@ -113,7 +115,9 @@ const ModalIngredientWrapper = styled.div`
   width: 70%;
   height: 60px;
   line-height: 120%;
-  background-color: whitesmoke;
+
+  
+  background-color: ${props => props.mode === "light" ? `whitesmoke` : `#2a2a30`};
   overflow-y: scroll;
   overflow-x: hidden;
 `;
@@ -124,6 +128,7 @@ const ModalRecipeWrapper = styled.div`
 `;
 const Modal = (props: Iprops) => {
   const nutriName = {"eng": "열량", "car": "탄수화물", "pro": "단백질", "fat":"지방", "na":"나트륨" };
+  const mode: string = useSelector((state: RootState) => state.mode);
 
   const closeModal = (e: any) => {
     props.setOpen(false);
@@ -132,15 +137,15 @@ const Modal = (props: Iprops) => {
   return (
     <>
     <BackWrapper onClick={closeModal}/>
-    <ModalWrapper open={props.open}>
+    <ModalWrapper mode={mode} open={props.open}>
     <ModalContent>
-      <ModalTopInfo>
+      <ModalTopInfo mode={mode}>
         <img style={{width: '100px', height: '100px', borderRadius:'30px'}} src={props.data.image}/>
         <ModalTitleWrapper>
           <ModalSubTitle>{props.data.type}</ModalSubTitle>
           <ModalTitle>{props.data.title}</ModalTitle>
         </ModalTitleWrapper>
-        <ModalIngredientWrapper>
+        <ModalIngredientWrapper mode={mode}>
           <ul>
             {props.data.ingredient.map((v: string, index: number)=>
                 index === props.data.ingredient.length-1 ? <li style={{fontSize: '15px', float: 'left'}} key={index}>{v}&nbsp;</li> :
@@ -153,7 +158,7 @@ const Modal = (props: Iprops) => {
           <li style={{float:'left', marginLeft: '8px'}}key={index}> <span style={{fontWeight: 'bolder'}}>{nutriName[key]}</span> {props.data.nutriment && props.data.nutriment[key]}</li>)
           }
         </ModalNutrimentWrapper>
-        <CloseButton onClick={closeModal}/>
+        <CloseButton mode={mode} onClick={closeModal}/>
       </ModalTopInfo>
       <ModalRecipeWrapper>
         <ul>

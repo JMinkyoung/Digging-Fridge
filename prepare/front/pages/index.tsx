@@ -35,11 +35,13 @@ const ComponentContainer = styled.div`
   max-width: 767px;
 `;
 
-const ContentContainer = styled.div`
+const ContentContainer = styled.div<{mode: string}>`
   padding: 5px;
   margin-top: 20px;
   border-radius: 20px;
   background-color: white;
+  background-color:${props => props.mode === "light" ? `white` : `#2a2a30`};
+
   min-height: 430px;
 `;
 
@@ -56,8 +58,9 @@ const MoreButton = styled.div`
   color: var(--mainyellow);
   border: 1px solid var(--maingreen);
   border-radius: 8px;
-  padding: 3px ;
+  padding: 0px 0px 5px 5px ;
   background-color:var(--maingreen);
+  font-size: 17px;
   font-weight: bolder;
 `;
 const FotterContainer = styled.div`
@@ -129,7 +132,7 @@ const Home: NextPage = () => {
       <ComponentContainer><MainHeader /></ComponentContainer>
       <ComponentContainer><SearchInput /></ComponentContainer>
       <ComponentContainer>
-        <ContentContainer ref={contentRef}>
+        <ContentContainer mode={mode} ref={contentRef}>
           
           {/* 1. 완전 처음인 경우 */}
           {tags.length===0 && !loadTagRecipesDone && 
@@ -143,11 +146,14 @@ const Home: NextPage = () => {
 
         </ContentContainer>
       </ComponentContainer>
-      <MoreButtonWrapper opend={opend} onClick={onClickMore}>
-        <MoreButton>
-          <span>더보기</span> <FiChevronDown/>
-        </MoreButton>
-      </MoreButtonWrapper>
+      {tagrecipes.length == 0 &&
+            <MoreButtonWrapper opend={opend} onClick={onClickMore}>
+            <MoreButton>
+              <span>더보기</span>
+              <FiChevronDown style={{paddingTop: '8px', fontSize: '20px', fontWeight: 'bolder'}}/>
+            </MoreButton>
+          </MoreButtonWrapper>
+      }
       <FotterContainer>
         <p>문의 및 레시피 추가</p>
         <Footer/>
