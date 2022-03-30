@@ -1,7 +1,9 @@
 import requests
+import pymongo
+
 from bs4 import BeautifulSoup
 
-url = 'https://www.10000recipe.com/recipe/6928540'
+url = 'https://www.10000recipe.com/recipe/6872594'
 
 recipe_title = ""
 recipe_image = ""
@@ -39,3 +41,17 @@ recipe_step,
 ingredientKey)
 else:
     print(response.status_code)
+
+client = pymongo.MongoClient("mongodb://admin:<password>@recipecluster-shard-00-00.zsgvx.mongodb.net:27017,recipecluster-shard-00-01.zsgvx.mongodb.net:27017,recipecluster-shard-00-02.zsgvx.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-dozlck-shard-0&authSource=admin&retryWrites=true&w=majority")
+db = client['main']
+
+data = {
+  "title" : recipe_title,
+  "image": recipe_image,
+  "ingredient": recipe_source,
+  "recipe": recipe_step,
+  "ingredientKey": ingredientKey,
+  "type": "샐러드"
+}
+
+db.mains.insert_one(data);
