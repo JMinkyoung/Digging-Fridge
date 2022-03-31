@@ -1,4 +1,5 @@
 import React from 'react';
+import { Router, useRouter } from 'next/router'
 import styled from 'styled-components';
 import ColorMode from './ColorMode';
 
@@ -8,9 +9,10 @@ const HeaderContainer = styled.div`
   margin-top:15px;
 `;
 const MainHeader = () => {
+  const router = useRouter();
   return (
     <HeaderContainer>
-      <img style={{width:"170px"}}src={'img/logo.png'}></img>
+        <img onClick={()=>router.reload()}style={{width:"170px", cursor:'pointer'}}src={'img/logo.png'}/>
       <ColorMode />
     </HeaderContainer>
   );
