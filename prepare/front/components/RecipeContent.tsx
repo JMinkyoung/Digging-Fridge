@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components';
 import { Recipe } from '../interface';
 import { FiChevronDown } from 'react-icons/fi';
@@ -23,6 +23,7 @@ const RecipeContentWrapper = styled.div<{open: boolean, mode: string}>`
   color: ${props => props.mode === "light" ?  `var(--darkcolor)` : `var(--lightcolor)`};
   transition:  height 0.5s ease;
   margin-bottom: 5px;
+  z-index: 0;
 
 `;
 const RecipeImgWrapper = styled.div`
@@ -71,14 +72,21 @@ const RecipeMore = styled(FiChevronDown)<{open: boolean}>`
 const RecipeContent = (props: Iprops) => {
   const [open, setOpen] = useState(false);
   const mode: string = useSelector((state: RootState) => state.mode);
-  const onClickMore = () => {
-    setOpen(!open);
-    props.setFixed(!props.fixed);
-  }
+
+  const onClickMore = useCallback(()=>{
+    setOpen(true);
+    props.setFixed(true);
+  },[]);
+
+  const onClickClose = useCallback(()=>{
+    setOpen(false);
+    props.setFixed(false);
+  },[]);
 
   return(
-    <RecipeContentWrapper mode={mode} open={open} onClick={onClickMore}>
-      <RecipeImgWrapper><img style={{width: '100%', height: '100%', borderRadius:'30px'}} src={props.data.image}/></RecipeImgWrapper>
+    <>
+    <RecipeContentWrapper mode={mode} open={open} onClick={onClickMore} >
+      <RecipeImgWrapper ><img style={{width: '100%', height: '100%', borderRadius:'30px'}} src={props.data.image}/></RecipeImgWrapper>
       <RecipeInfoWrapper>
         <RecipeTitle mode={mode} len={props.data.title.length}>{props.data.title}</RecipeTitle>
         <RecipeIngredient>{props.data.ingredient.map((v,idx)=>{
@@ -87,8 +95,8 @@ const RecipeContent = (props: Iprops) => {
         })}</RecipeIngredient>
       </RecipeInfoWrapper>
       <RecipeMore open={open}/>
-      {open ? <Modal data={props.data} open={open} setFixed={props.setFixed} setOpen={setOpen}/> : null }
     </RecipeContentWrapper>
+    {open ? <Modal data={props.data} open={open} setOpen={setOpen} setClose={onClickClose}/> : null }</>
   );
 };
 

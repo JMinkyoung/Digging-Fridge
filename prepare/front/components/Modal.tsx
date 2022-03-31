@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { Recipe } from '../interface';
 import { BsX } from 'react-icons/bs';
@@ -9,7 +9,7 @@ interface Iprops {
   data: Recipe;
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setFixed: React.Dispatch<React.SetStateAction<boolean>>;
+  setClose(): void;
 }
 
 const slideUp = keyframes`
@@ -27,7 +27,7 @@ const ModalWrapper = styled.div<{open:boolean, mode: string}>`
   background-color:${props => props.mode === "light" ? `white` : `var(--darkbackcolor)`};
   bottom: 0;
   left: 0;
-  z-index: 2;
+  z-index: 10000;
   animation-duration: 0.5s;
   animation-name: ${slideUp};
   transition: all 0.5s ease-in-out;
@@ -65,12 +65,11 @@ const BackWrapper = styled.div`
 const ModalTopInfo = styled.div<{mode: string}>`
   background-color:${props => props.mode === "light" ? `white` : `var(--darkbackcolor)`};
   width:95%;
-  height: 180px;
+  height: auto;
   position: fixed;
-  padding-top: 10px;
+  padding: 10px 0 10px 0;
   border-radius: 6px 6px 0 0 ;
-  border-bottom: 2px solid black ;
-
+  border-bottom: ${props => props.mode === "light" ? `2px solid black` : `2px solid var(--lightcolor)`};
 `;
 
 const ModalTitleWrapper = styled.div`
@@ -102,8 +101,10 @@ const CloseButton = styled(BsX)<{mode: string}>`
 `;
 
 const ModalNutrimentWrapper = styled.ul`
+  height: auto;
   margin-top: 40px;
   font-size: 14px;
+  line-height: 18px;
 `;
 
 const ModalIngredientWrapper = styled.div<{mode: string}>`
@@ -122,24 +123,25 @@ const ModalIngredientWrapper = styled.div<{mode: string}>`
   overflow-x: hidden;
 `;
 
-const ModalRecipeWrapper = styled.div`
-  padding-top: 190px;
+const ModalRecipeWrapper = styled.div<{margin: number}>`
+  padding-top: ${props => `${props.margin + 10}px`};
   line-height: 150%;
 `;
 const Modal = (props: Iprops) => {
   const nutriName = {"eng": "열량", "car": "탄수화물", "pro": "단백질", "fat":"지방", "na":"나트륨" };
   const mode: string = useSelector((state: RootState) => state.mode);
-
-  const closeModal = (e: any) => {
-    props.setOpen(false);
-    props.setFixed(false);
-  }
+  const [height, setHeight] = useState(0);
+  const topRef = useCallback((node)=>{
+    if(node !== null){
+      setHeight(node.getBoundingClientRect().height);
+    }
+  },[]);
   return (
     <>
-    <BackWrapper onClick={closeModal}/>
+    <BackWrapper onClick={props.setClose}/>
     <ModalWrapper mode={mode} open={props.open}>
     <ModalContent>
-      <ModalTopInfo mode={mode}>
+      <ModalTopInfo mode={mode} ref={topRef}>
         <img style={{width: '100px', height: '100px', borderRadius:'30px'}} src={props.data.image}/>
         <ModalTitleWrapper>
           <ModalSubTitle>{props.data.type}</ModalSubTitle>
@@ -158,9 +160,9 @@ const Modal = (props: Iprops) => {
           <li style={{float:'left', marginLeft: '8px'}}key={index}> <span style={{fontWeight: 'bolder'}}>{nutriName[key]}</span> {props.data.nutriment && props.data.nutriment[key]}</li>)
           }
         </ModalNutrimentWrapper>
-        <CloseButton mode={mode} onClick={closeModal}/>
+        <CloseButton mode={mode} onClick={props.setClose}/>
       </ModalTopInfo>
-      <ModalRecipeWrapper>
+      <ModalRecipeWrapper margin={height} >
         <ul>
           {props.data.recipe.map((v: string, index: number)=>
               <li style={{fontSize: '16px', marginBottom: '10px'}} key={index}><span style={{fontWeight:'bolder'}}>{index+1+"."}</span>{v.replace(/^[0-9]+./, "").replace(/[a-z]$/, "")}</li>)}
