@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../modules';
 import Footer from '../components/Footer';
 import RecipeContent from '../components/RecipeContent';
+import AskButton from '../components/AskButton';
 import { FiChevronDown } from 'react-icons/fi';
 import React, {useEffect, useState, useRef} from 'react';
 import { Recipe } from '../interface';
@@ -41,7 +42,6 @@ const ContentContainer = styled.div<{mode: string}>`
   border-radius: 20px;
   background-color: white;
   background-color:${props => props.mode === "light" ? `white` : `#2a2a30`};
-
   min-height: 430px;
 `;
 
@@ -57,14 +57,18 @@ const MoreButtonWrapper = styled.div<{opend: boolean}>`
 const MoreButton = styled.div`
   color: var(--mainyellow);
   border: 1px solid var(--maingreen);
-  border-radius: 8px;
-  padding: 0px 0px 5px 5px ;
+  border-radius: 10px;
+  padding: 3px 0px 8px 8px ;
   background-color:var(--maingreen);
-  font-size: 17px;
+  font-size: 15px;
   font-weight: bolder;
 `;
 const FotterContainer = styled.div`
-  margin-top: 50px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 13px;
 `;
 
 const Home: NextPage = () => {
@@ -108,7 +112,7 @@ const Home: NextPage = () => {
   useEffect(()=>{  
     const onScroll = () => {
         if(contentRef.current.clientHeight/3 < scrollTop) {
-            if(!loadRecipesLoading && tagrecipes.length===0 ){  // 일반 레시피 더 불러오기
+            if(!loadRecipesLoading && tagrecipes.length===0 && opend){  // 일반 레시피 더 불러오기
               dispatch({type: LOAD_RECIPES_REQUEST, data: recipes[recipes.length-1]._id});
             }else if(!loadTagRecipesLoading && tagrecipes.length!==0){  // 태그 레시피 더 불러오기
               dispatch({type: LOAD_MORE_TAG_RECIPES_REQUEST, data: {tags, lastId: tagrecipes[tagrecipes.length-1]._id}});
@@ -155,8 +159,9 @@ const Home: NextPage = () => {
           </MoreButtonWrapper>
       }
       <FotterContainer>
-        <p>문의 및 레시피 추가</p>
-        <Footer/>
+        <p>문의사항이 있거나 새로운 레시피를 추가하고 싶으신 경우</p>
+        <AskButton title={"문의사항 및 레시피 추가"} url={"https://www.youtube.com/watch?v=qrshRevYiiA"} />
+        <Footer mode={mode}/>
       </FotterContainer>
     </PageContainer>
   )
