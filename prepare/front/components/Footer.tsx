@@ -6,7 +6,7 @@ interface Iprops {
 }
 
 const FooterWrapper = styled.div<{mode: string}>`
-  background-color:   ${props => props.mode === 'light' ? "rgb(230, 232, 234)": "#2a2a30"};
+  background-color: ${props => props.mode === 'light' ? "rgb(230, 232, 234)": "#2a2a30"};
   width:100%;
   height:auto; 
   display: flex;

@@ -18,7 +18,6 @@ const RecipeContentWrapper = styled.div<{open: boolean, mode: string}>`
   padding: 5px 5px 0 5px;
   border-radius: 20px;
   justify-content: space-between;
-  background-color: white;
   background-color:${props => props.mode === "light" ? `white` : `#2a2a30`};
   color: ${props => props.mode === "light" ?  `var(--darkcolor)` : `var(--lightcolor)`};
   transition:  height 0.5s ease;
