@@ -116,8 +116,6 @@ const ModalIngredientWrapper = styled.div<{mode: string}>`
   width: 70%;
   height: 60px;
   line-height: 120%;
-
-  
   background-color: ${props => props.mode === "light" ? `whitesmoke` : `#2a2a30`};
   overflow-y: scroll;
   overflow-x: hidden;

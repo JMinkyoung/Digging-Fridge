@@ -15,6 +15,7 @@ import { wrapper } from '../modules/configureStore';
 import { END } from 'redux-saga';
 import { useMediaQuery } from 'react-responsive';
 import MobileWarn from '../components/MobileWarn';
+import { useIsMobile } from '../components/useIsMobile';
 
 const PageContainer = styled.div<{mode: string, fixed: boolean}>`
   width: 100%;
@@ -25,10 +26,6 @@ const PageContainer = styled.div<{mode: string, fixed: boolean}>`
 
   background-color:${props => props.mode === "light" ? `var(--lightbackcolor)` : `var(--darkbackcolor)`};
   color: ${props => props.mode === "light" ?  `var(--darkcolor)` : `var(--lightcolor)`};
-
-  @media ${(props) => props.theme.mobile} {
-
-  }
 `;
 
 const ComponentContainer = styled.div`
@@ -78,9 +75,6 @@ const Home: NextPage = () => {
   const contentRef = useRef() as any;
   const pageRef = useRef() as any;
 
-  const isMobile = useMediaQuery({
-    query: "(max-width:767px)"
-  });
 
   const mode: string = useSelector((state: RootState) => state.mode);
   const recipes: Recipe[] = useSelector((state: RootState) => state.recipe.mainRecipes);
@@ -92,7 +86,7 @@ const Home: NextPage = () => {
 
   const loadTagRecipesDone: boolean = useSelector((state: RootState) => state.recipe.loadTagRecipesDone);
 
-
+  const isMobile = useIsMobile();
   const [fixed, setFixed] = useState(false);
   const [opend, setOpend] = useState(false);
   const [scrollTop, setScrollTop] = useState(0);
@@ -142,42 +136,41 @@ const Home: NextPage = () => {
 
 
   return (
-    <>
-    {isMobile ? 
-    <PageContainer fixed={fixed} mode={mode} ref={pageRef}>
-    <ComponentContainer><MainHeader /></ComponentContainer>
-    <ComponentContainer><SearchInput /></ComponentContainer>
-    <ComponentContainer>
-      <ContentContainer mode={mode} ref={contentRef}>
-        
-        {/* 1. 완전 처음인 경우 */}
-        {tags.length===0 && !loadTagRecipesDone && 
-          recipes.map((v,idx)=>{
-            return <RecipeContent key={idx} data={v} fixed={fixed} setFixed={setFixed} />})
-        }
-        {/* 2. 검색했는데 결과가 있는 경우 */}
-        {tags.length !==0 && tagrecipes.length ? 
-           tagrecipes.map((v,idx)=>{
-            return <RecipeContent key={idx} data={v} fixed={fixed} setFixed={setFixed} />}) : loadTagRecipesDone && <h1>레시피가 없습니다</h1>}
+  <>
+  {isMobile ? 
+  <PageContainer fixed={fixed} mode={mode} ref={pageRef}>
+  <ComponentContainer><MainHeader /></ComponentContainer>
+  <ComponentContainer><SearchInput /></ComponentContainer>
+  <ComponentContainer>
+    <ContentContainer mode={mode} ref={contentRef}>
+      {/* 1. 완전 처음인 경우 */}
+      {tags.length===0 && !loadTagRecipesDone && 
+        recipes.map((v,idx)=>{
+          return <RecipeContent key={idx} data={v} fixed={fixed} setFixed={setFixed} />})
+      }
+      {/* 2. 검색했는데 결과가 있는 경우 */}
+      {tags.length !==0 && tagrecipes.length ? 
+         tagrecipes.map((v,idx)=>{
+          return <RecipeContent key={idx} data={v} fixed={fixed} setFixed={setFixed} />}) : loadTagRecipesDone && <h1>레시피가 없습니다</h1>}
 
-      </ContentContainer>
-    </ComponentContainer>
-    {tagrecipes.length == 0 &&
-          <MoreButtonWrapper opend={opend} onClick={onClickMore}>
-          <MoreButton>
-            <span>더보기</span>
-            <FiChevronDown style={{paddingTop: '8px', fontSize: '20px', fontWeight: 'bolder'}}/>
-          </MoreButton>
-        </MoreButtonWrapper>
-    }
-    <FotterContainer>
-      <p>문의사항이 있거나 새로운 레시피를 추가하고 싶으신 경우</p>
-      <AskButton title={"문의사항 및 레시피 추가"} url={"https://www.youtube.com/watch?v=qrshRevYiiA"} />
-      <Footer mode={mode}/>
-    </FotterContainer>
-  </PageContainer> :
-  <MobileWarn/>}
-    </>
+    </ContentContainer>
+  </ComponentContainer>
+  {tagrecipes.length == 0 &&
+        <MoreButtonWrapper opend={opend} onClick={onClickMore}>
+        <MoreButton>
+          <span>더보기</span>
+          <FiChevronDown style={{paddingTop: '8px', fontSize: '20px', fontWeight: 'bolder'}}/>
+        </MoreButton>
+      </MoreButtonWrapper>
+  }
+  <FotterContainer>
+    <p>문의사항이 있거나 새로운 레시피를 추가하고 싶으신 경우</p>
+    <AskButton title={"문의사항 및 레시피 추가"} url={"https://www.youtube.com/watch?v=qrshRevYiiA"} />
+    <Footer mode={mode}/>
+  </FotterContainer>
+</PageContainer> :
+<MobileWarn/>}
+  </>
   )
 }
 
