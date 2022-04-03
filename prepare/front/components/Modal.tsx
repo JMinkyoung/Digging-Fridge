@@ -64,10 +64,10 @@ const BackWrapper = styled.div`
 
 const ModalTopInfo = styled.div<{mode: string}>`
   background-color:${props => props.mode === "light" ? `white` : `var(--darkbackcolor)`};
-  width:95%;
+  width:100%;
   height: auto;
   position: fixed;
-  padding: 10px 0 10px 0;
+  padding: 10px 5px 10px 5px;
   border-radius: 6px 6px 0 0 ;
   border-bottom: ${props => props.mode === "light" ? `2px solid black` : `2px solid var(--lightcolor)`};
 `;

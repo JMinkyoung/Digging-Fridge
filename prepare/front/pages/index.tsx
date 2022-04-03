@@ -13,9 +13,9 @@ import { Recipe } from '../interface';
 import { LOAD_RECIPES_REQUEST, LOAD_MORE_TAG_RECIPES_REQUEST } from '../modules/recipe';
 import { wrapper } from '../modules/configureStore';
 import { END } from 'redux-saga';
-import { useMediaQuery } from 'react-responsive';
 import MobileWarn from '../components/MobileWarn';
 import { useIsMobile } from '../components/useIsMobile';
+import EmptyRecipe from '../components/EmptyRecipe';
 
 const PageContainer = styled.div<{mode: string, fixed: boolean}>`
   width: 100%;
@@ -36,6 +36,7 @@ const ComponentContainer = styled.div`
 `;
 
 const ContentContainer = styled.div<{mode: string}>`
+  height: 100%;
   padding: 5px;
   margin-top: 20px;
   border-radius: 20px;
@@ -74,7 +75,6 @@ const Home: NextPage = () => {
   const dispatch = useDispatch();
   const contentRef = useRef() as any;
   const pageRef = useRef() as any;
-
 
   const mode: string = useSelector((state: RootState) => state.mode);
   const recipes: Recipe[] = useSelector((state: RootState) => state.recipe.mainRecipes);
@@ -151,7 +151,7 @@ const Home: NextPage = () => {
       {/* 2. 검색했는데 결과가 있는 경우 */}
       {tags.length !==0 && tagrecipes.length ? 
          tagrecipes.map((v,idx)=>{
-          return <RecipeContent key={idx} data={v} fixed={fixed} setFixed={setFixed} />}) : loadTagRecipesDone && <h1>레시피가 없습니다</h1>}
+          return <RecipeContent key={idx} data={v} fixed={fixed} setFixed={setFixed} />}) : loadTagRecipesDone && <EmptyRecipe/>}
 
     </ContentContainer>
   </ComponentContainer>
