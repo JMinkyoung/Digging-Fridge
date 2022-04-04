@@ -162,11 +162,11 @@ const Home: NextPage = () => {
 }
 
 //@ts-ignore
-export const getStaticProps = wrapper.getStaticProps(store  => async () => {
-  store.dispatch({type: LOAD_RECIPES_REQUEST});
-  store.dispatch(END);
-  await store.sagaTask.toPromise();
-});
+// export const getStaticProps = wrapper.getStaticProps(store  => async () => {
+//   store.dispatch({type: LOAD_RECIPES_REQUEST});
+//   store.dispatch(END);
+//   await store.sagaTask.toPromise();
+// });
 
 
 
