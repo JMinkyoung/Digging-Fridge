@@ -8,7 +8,7 @@ const { PORT, DB_PASS, M_URL } = process.env;
 const mainRouter = require("./routes/routes");
 
 app.use(cors({
-    origin: ['http://localhost:3000',`http://${M_URL}:3000`],
+    origin: ['http://localhost:3000',`http://${M_URL}:3000`, 'http://34.238.85.230'],
     credentials: true,
 }));
 
