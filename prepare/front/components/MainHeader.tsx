@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import styled from 'styled-components';
 import ColorMode from './ColorMode';
 

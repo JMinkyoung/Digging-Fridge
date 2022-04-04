@@ -1,6 +1,6 @@
 export interface IrecipeInitialState {
-  mainRecipes: any[],
-  tagRecipes: any[],
+  mainRecipes: Recipe[],
+  tagRecipes: Recipe[],
 
   loadRecipesLoading: boolean,
   loadRecipesDone: boolean,

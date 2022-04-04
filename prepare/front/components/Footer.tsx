@@ -17,6 +17,7 @@ const FooterWrapper = styled.div<{mode: string}>`
   text-align: center;
   margin-top: 10px;
 `;
+
 const Footer = (props: Iprops) => {
   return(
     <FooterWrapper mode={props.mode}>

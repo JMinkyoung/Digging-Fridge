@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { MdDarkMode, MdOutlineLightMode} from "react-icons/md";
@@ -13,10 +13,10 @@ const ColorModeContainer = styled.div`
 const ColorMode = () => {
   const dispatch = useDispatch();
   const mode: string = useSelector((state: RootState) => state.mode);
-  const onClickToggle = (e: any) => {
-    e.preventDefault();
+
+  const onClickToggle = useCallback(() => {
     dispatch(toggle());
-  }
+  },[]);
 
   return (
     <ColorModeContainer>

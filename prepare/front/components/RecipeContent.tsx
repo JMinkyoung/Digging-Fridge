@@ -67,7 +67,6 @@ const RecipeMore = styled(FiChevronDown)<{open: boolean}>`
   cursor: pointer;
 `;
 
-
 const RecipeContent = (props: Iprops) => {
   const [open, setOpen] = useState(false);
   const mode: string = useSelector((state: RootState) => state.mode);

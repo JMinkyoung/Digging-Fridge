@@ -57,7 +57,6 @@ const SearchInputContent = styled.input<{mode: string}>`
 
 const SearchInput = () => {
   const dispatch = useDispatch();
-  // const [tags, setTags] = useState<string[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const mode: string = useSelector((state: RootState) => state.mode);
   const tags: string[] = useSelector((state: RootState) => state.tag.tags);
@@ -90,7 +89,6 @@ const SearchInput = () => {
 
   useEffect(()=>{ // 태그가 추가되거나 삭제 될때마다 API 요청
     if(tags.length!==0) dispatch({type: LOAD_TAG_RECIPES_REQUEST, data: tags});
-    // 몇개씩 불러올지 결정 (너무 많은 경우가 있음) -> 이경우엔 마지막 아이디?
   },[tags]);
 
   return (

@@ -38,20 +38,6 @@ const GlobalStyle = createGlobalStyle`
     transform: translateZ(0);
     backface-visibility: hidden;
   }
-  li{
-    /* float: left; */
-  }
-  /* @media only screen and (max-width: 768px) {
-    body {
-      font-size: 15px;
-    }
-  }
-
-  @media only screen and (max-width: 576px) {
-    body {
-      font-size: 12px;
-    }
-  } */
 `
 
 export default GlobalStyle;

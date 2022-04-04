@@ -8,7 +8,6 @@ router.get("/", async (req, res) => {   //  GET /recipes?lastId= || /recipes
     let query = {};
     if(lastId) query =  {'_id' : { "$lt" : lastId}};
     const recipes = await Main.find(query).sort({"_id":-1}).limit(5);
-    // const recipes=await Main.find( { $and: [{"ingredientKey": { $regex: "스팸"} },{"ingredientKey": { $regex: "김치"} },{"ingredientKey": { $regex: "파"} } ] } );
     res.status(200).json(recipes);
   }catch(err){
     res.status(500).json({message: err.message});
@@ -20,7 +19,6 @@ router.get("/tags/*", async (req, res) => {   //  GET /recipes/tags/tag1/tag2/ta
     let lastId = req.query.lastId;
     const tags = req.params[0].split("/");
     let query = {};
-    // const query = { $and: [] };
     if(lastId) query =  { $and: [] ,'_id' : { "$gt" : lastId}};
     else query = { $and: [] };
     

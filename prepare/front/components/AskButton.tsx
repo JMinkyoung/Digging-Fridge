@@ -5,7 +5,6 @@ interface Iprops {
     title: string;
     url: string;
 }
-
 const AskButtonWrapper = styled.a`
   font-size: 15px;  
   font-weight: bolder;
