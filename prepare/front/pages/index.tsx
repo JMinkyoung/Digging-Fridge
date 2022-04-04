@@ -1,4 +1,4 @@
-import type { NextPage } from 'next';
+import type { GetStaticProps, NextPage } from 'next';
 import styled from 'styled-components';
 import React, {useEffect, useState, useRef} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -16,6 +16,7 @@ import { IrecipeInitialState } from '../interface';
 import { LOAD_RECIPES_REQUEST, LOAD_MORE_TAG_RECIPES_REQUEST } from '../modules/recipe';
 import { wrapper } from '../modules/configureStore';
 import { END } from 'redux-saga';
+import { Props } from 'next/script';
 
 
 const PageContainer = styled.div<{mode: string, fixed: boolean}>`
@@ -160,10 +161,13 @@ const Home: NextPage = () => {
   )
 }
 
-export const getStaticProps = wrapper.getStaticProps(store => async() => {
+//@ts-ignore
+export const getStaticProps = wrapper.getStaticProps(store  => async () => {
   store.dispatch({type: LOAD_RECIPES_REQUEST});
   store.dispatch(END);
   await store.sagaTask.toPromise();
 });
+
+
 
 export default Home;

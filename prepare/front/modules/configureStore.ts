@@ -16,6 +16,6 @@ const configureStore = () => {
   return store;
 };
 
-export const wrapper = createWrapper<Store<State>>(configureStore, {debug: true});
+export const wrapper = createWrapper<Store>(configureStore, {debug: true});
 
 
