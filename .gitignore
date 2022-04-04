@@ -1,4 +1,7 @@
 prepare/front/node_modules
 prepare/back/node_modules
 prepare/front/.next
+prepare/digging-fridge.pem
 .env
+node_modules
+.next
