@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app"
+    "start": "pm2 start app.js"
   },
   "author": "JMinkyoung",
   "license": "ISC",
@@ -15,6 +15,7 @@
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "mongoose": "^6.2.4",
+    "pm2": "^5.2.0",
     "request": "^2.88.2"
   },
   "devDependencies": {
