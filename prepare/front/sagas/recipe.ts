@@ -70,7 +70,7 @@ function* loadMoreTagRecipes(action) {
 }
 
 function* watchLoadRecipes() {
-  yield takeLatest(LOAD_RECIPES_REQUEST,loadRecipes);
+  yield throttle(1000,LOAD_RECIPES_REQUEST,loadRecipes);
 }
 
 function* watchLoadTagRecipes() {
@@ -78,7 +78,7 @@ function* watchLoadTagRecipes() {
 }
 
 function* watchLoadMoreTagRecipes() {
-  yield takeLatest(LOAD_MORE_TAG_RECIPES_REQUEST,loadMoreTagRecipes);
+  yield throttle(1000,LOAD_MORE_TAG_RECIPES_REQUEST,loadMoreTagRecipes);
 }
 
 export default function* recipeSaga() {

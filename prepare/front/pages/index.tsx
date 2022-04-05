@@ -1,6 +1,6 @@
 import type { GetStaticProps, NextPage } from 'next';
 import styled from 'styled-components';
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef, useCallback} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import MainHeader from '../components/MainHeader';
 import SearchInput from '../components/SearchInput';
@@ -8,7 +8,7 @@ import Footer from '../components/Footer';
 import RecipeContent from '../components/RecipeContent';
 import AskButton from '../components/AskButton';
 import MobileWarn from '../components/MobileWarn';
-import { useIsMobile } from '../components/useIsMobile';
+import { useIsMobile } from '../components/hooks/useIsMobile';
 import EmptyRecipe from '../components/EmptyRecipe';
 import { RootState } from '../modules';
 import { FiChevronDown } from 'react-icons/fi';
@@ -16,8 +16,7 @@ import { IrecipeInitialState } from '../interface';
 import { LOAD_RECIPES_REQUEST, LOAD_MORE_TAG_RECIPES_REQUEST } from '../modules/recipe';
 import { wrapper } from '../modules/configureStore';
 import { END } from 'redux-saga';
-import { Props } from 'next/script';
-
+import { throttle } from 'lodash';
 
 const PageContainer = styled.div<{mode: string, fixed: boolean}>`
   width: 100%;
@@ -84,14 +83,12 @@ const Home: NextPage = () => {
   const [fixed, setFixed] = useState(false);
   const [opend, setOpend] = useState(false);
   const [scrollTop, setScrollTop] = useState(0);
+  const [prevScroll, setPrevScroll] = useState(0);
+  const [scrollDirection, setScrollDirection] = useState("");
 
   useEffect(()=>{
     setOpend(false);
   },[]);
-
-  const updateScrollTop = () => {
-    setScrollTop(pageRef.current.scrollTop); 
-  }
 
   useEffect(() => { // 렌더링 될때마다 scrollTop 업데이트
     if(isMobile){
@@ -101,18 +98,33 @@ const Home: NextPage = () => {
       watch(); 
     }
   });
+  useEffect(()=>{
+    if(scrollTop === 0){
+      setScrollDirection("");
+    }
+    if(scrollTop > prevScroll) {
+      setScrollDirection("down");
+    }else if(scrollTop < prevScroll){
+      setScrollDirection("up");
+    }
+    setPrevScroll(scrollTop);
+  },[scrollTop]);
 
+
+  const updateScrollTop = () => {
+    setScrollTop(pageRef.current.scrollTop);
+  }
   useEffect(()=>{  
     if(isMobile){
-        const onScroll = () => {
-          if(contentRef.current.clientHeight/3 < scrollTop) {
+        const onScroll = throttle(() => {
+          if(contentRef.current.clientHeight/3 < scrollTop && scrollDirection === "down" ) {
               if(!loadRecipesLoading && tagRecipes.length===0 && opend){  // 일반 레시피 더 불러오기
                 dispatch({type: LOAD_RECIPES_REQUEST, data: mainRecipes[mainRecipes.length-1]._id});
               }else if(!loadTagRecipesLoading && tagRecipes.length!==0){  // 태그 레시피 더 불러오기
                 dispatch({type: LOAD_MORE_TAG_RECIPES_REQUEST, data: {tags, lastId: tagRecipes[tagRecipes.length-1]._id}});
               }
           }
-      }
+      },1000);
       pageRef.current.addEventListener('scroll',onScroll);
     }
   },[loadRecipesLoading, mainRecipes, scrollTop]);
